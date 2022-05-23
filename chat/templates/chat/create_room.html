@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+{% block content %}
+<style>
+    .container{
+        width:30%;
+    }
+</style>
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="container">
+  <!-- Content here -->
+  {% if page == "create" %}
+  <div class="form-group">
+    <label for="exampleInputEmail1">Room name</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" name="room_name" aria-describedby="emailHelp" placeholder="Enter Room name">
+  </div>
+  <button type="submit" class="btn btn-primary">Create</button>
+  {% else %}
+  <div class="form-group">
+    <label for="exampleInputEmail1">Room name</label>
+    <input type="text" class="form-control" id="exampleInputEmail1" name="room_name" aria-describedby="emailHelp" placeholder="Enter Room name">
+  </div>
+  <button type="submit" class="btn btn-primary">Join</button>
+  {% endif %}
+</form>
+</div>
+  
+{% endblock %}

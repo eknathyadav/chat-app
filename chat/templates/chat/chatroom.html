@@ -1,0 +1,110 @@
+{% extends 'main.html' %} {% block content %}
+<style>
+  .box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .form-elem {
+    width: 100%;
+  }
+  #submit {
+    height: 40px;
+    margin-top: 10px;
+    border:1px solid black;
+    font-weight:bold;
+  }
+  #submit:hover{
+    background-color:#98fb98;
+  
+  }
+  .username {
+    color: blue;
+  }
+ 
+  #chat-block {
+    height: 400px;
+    padding-top:5px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  }
+  .msg {
+    padding: 3px 10px;
+  }
+</style>
+<div class="box">
+  <div class="form-container">
+    <form>
+      <div id="chat-block" class="form-elem"></div>
+      <br />
+      <input type="text" id="chat-input" class="form-elem" size="80" />
+      <br />
+      <input id="submit" type="button" class="form-elem" value="Send" />
+    </form>
+    <div class="form-container"></div>
+    <div id="user-block"></div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    {{ room_name|json_script:"room_name"}}
+    {{request.user.username|json_script:"user-name"}}
+    <script>
+      let isSubmit = false;
+      const roomName = JSON.parse(
+        document.getElementById("room_name").textContent
+      );
+      const username = JSON.parse(
+        document.getElementById("user-name").textContent
+      );
+      const chatSocket = new WebSocket(
+        `ws://${window.location.host}/ws/chat/${roomName}/`
+      );
+      chatSocket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        document.getElementById(
+          "chat-block"
+        ).innerHTML += `<div class="msg" ><span class="username">${data.username}</span>: ${data.message}</div> `;
+      };
+      function helper(e) {
+        e.preventDefault();
+        const chatText = document.getElementById("chat-input");
+        const message = chatText.value;
+        console.log(message);
+        chatSocket.send(
+          JSON.stringify({
+            message: message,
+            username: username,
+          })
+        );
+        chatText.value = "";
+      }
+      function handler(e) {
+        if (e.key === "Enter") {
+          helper(e);
+        }
+      }
+      function handlerClick(e) {
+        helper(e);
+      }
+      document
+        .getElementById("chat-input")
+        .addEventListener("keydown", handler);
+      document.getElementById("submit").addEventListener("click", handlerClick);
+    </script>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    {% endblock %}
+  </div>
+</div>

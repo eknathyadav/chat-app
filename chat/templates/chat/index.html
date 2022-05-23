@@ -1,0 +1,15 @@
+{% extends 'main.html' %} {% block content %}
+<style>
+  .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+</style>
+
+<div class="button-container">
+  <a class="btn btn-primary btn-lg" href="{% url 'chat:create-room' %}" role="button">Create Chat Room</a>
+  <a class="btn btn-primary btn-lg" href="{% url 'chat:join-room' %}" role="button">Join Chat Room</a>
+</div>
+{% endblock %}
