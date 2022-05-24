@@ -5,10 +5,6 @@ Built a chat app using web sockets and Django Channels
    ```
    git clone https://github.com/eknathyadav/chat-app.git
    ```
-2. Install Django framework.
-   ```
-   pip install django
-   ```
 3. Access the chat-app folder.
 4. Run the virtual machine using 
    ```
