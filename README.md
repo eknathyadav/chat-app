@@ -14,4 +14,4 @@ Built a chat app using web sockets and Django Channels
    ```
    python manage.py runserver
    ```
-5.Paste http://127.0.0.1:8000/chat/ on your browser to start the app.
+5. Paste http://127.0.0.1:8000/chat/ on your browser to start the app.
